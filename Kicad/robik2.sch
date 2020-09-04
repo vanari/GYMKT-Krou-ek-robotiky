@@ -1,0 +1,236 @@
+EESchema Schematic File Version 4
+EELAYER 30 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 1 1
+Title "Robík GYMKT"
+Date "2020-08-25"
+Rev ""
+Comp "Gymnázium Jaroslava Vrchlického, Klatovy "
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L Connector:Conn_01x06_Male J1
+U 1 1 5F4519C6
+P 1050 1150
+F 0 "J1" H 1158 1531 50  0000 C CNN
+F 1 "Conn_01x06_Male" H 1158 1440 50  0000 C CNN
+F 2 "Connector_PinSocket_2.00mm:PinSocket_1x06_P2.00mm_Vertical_SMD_Pin1Left" H 1050 1150 50  0001 C CNN
+F 3 "~" H 1050 1150 50  0001 C CNN
+	1    1050 1150
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector:Conn_01x06_Male J2
+U 1 1 5F45259C
+P 1050 2000
+F 0 "J2" H 1158 2381 50  0000 C CNN
+F 1 "Conn_01x06_Male" H 1158 2290 50  0000 C CNN
+F 2 "Connector_PinSocket_2.00mm:PinSocket_1x06_P2.00mm_Vertical_SMD_Pin1Left" H 1050 2000 50  0001 C CNN
+F 3 "~" H 1050 2000 50  0001 C CNN
+	1    1050 2000
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector:Conn_01x08_Male J3
+U 1 1 5F452F2D
+P 1050 2850
+F 0 "J3" H 1158 3331 50  0000 C CNN
+F 1 "Conn_01x08_Male" H 1158 3240 50  0000 C CNN
+F 2 "Connector_PinSocket_2.00mm:PinSocket_1x08_P2.00mm_Vertical_SMD_Pin1Left" H 1050 2850 50  0001 C CNN
+F 3 "~" H 1050 2850 50  0001 C CNN
+	1    1050 2850
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector:Conn_01x08_Male J4
+U 1 1 5F453DBE
+P 1050 3900
+F 0 "J4" H 1158 4381 50  0000 C CNN
+F 1 "Conn_01x08_Male" H 1158 4290 50  0000 C CNN
+F 2 "Connector_PinSocket_2.00mm:PinSocket_1x08_P2.00mm_Vertical_SMD_Pin1Left" H 1050 3900 50  0001 C CNN
+F 3 "~" H 1050 3900 50  0001 C CNN
+	1    1050 3900
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector:Conn_01x03_Male J5
+U 1 1 5F455BF6
+P 1050 4700
+F 0 "J5" H 1158 4981 50  0000 C CNN
+F 1 "Conn_01x03_Male" H 1158 4890 50  0000 C CNN
+F 2 "Connector_PinSocket_2.00mm:PinSocket_1x03_P2.00mm_Vertical" H 1050 4700 50  0001 C CNN
+F 3 "~" H 1050 4700 50  0001 C CNN
+	1    1050 4700
+	1    0    0    -1  
+$EndComp
+$Comp
+L Transistor_FET:BUZ11 Q1
+U 1 1 5F4567FA
+P 1100 5150
+F 0 "Q1" H 1305 5196 50  0000 L CNN
+F 1 "BUZ11" H 1305 5105 50  0000 L CNN
+F 2 "Package_TO_SOT_THT:TO-220-3_Vertical" H 1350 5075 50  0001 L CIN
+F 3 "http://www.fairchildsemi.com/ds/BU/BUZ11.pdf" H 1100 5150 50  0001 L CNN
+	1    1100 5150
+	1    0    0    -1  
+$EndComp
+$Comp
+L Regulator_Linear:LM7805_TO220 U1
+U 1 1 5F4573E9
+P 1200 5650
+F 0 "U1" H 1200 5892 50  0000 C CNN
+F 1 "LM7805_TO220" H 1200 5801 50  0000 C CNN
+F 2 "Package_TO_SOT_THT:TO-220-3_Vertical" H 1200 5875 50  0001 C CIN
+F 3 "http://www.fairchildsemi.com/ds/LM/LM7805.pdf" H 1200 5600 50  0001 C CNN
+	1    1200 5650
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C1
+U 1 1 5F4584F1
+P 1200 6200
+F 0 "C1" H 1315 6246 50  0000 L CNN
+F 1 "C" H 1315 6155 50  0000 L CNN
+F 2 "Capacitor_THT:C_Rect_L7.0mm_W2.0mm_P5.00mm" H 1238 6050 50  0001 C CNN
+F 3 "~" H 1200 6200 50  0001 C CNN
+	1    1200 6200
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C2
+U 1 1 5F4588F8
+P 1650 6200
+F 0 "C2" H 1765 6246 50  0000 L CNN
+F 1 "C" H 1765 6155 50  0000 L CNN
+F 2 "Capacitor_THT:C_Rect_L7.0mm_W2.0mm_P5.00mm" H 1688 6050 50  0001 C CNN
+F 3 "~" H 1650 6200 50  0001 C CNN
+	1    1650 6200
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R_POT_TRIM RV1
+U 1 1 5F45ABA9
+P 1200 6700
+F 0 "RV1" H 1130 6746 50  0000 R CNN
+F 1 "R_POT_TRIM" H 1130 6655 50  0000 R CNN
+F 2 "Potentiometer_THT:Potentiometer_ACP_CA9-V10_Vertical_Hole" H 1200 6700 50  0001 C CNN
+F 3 "~" H 1200 6700 50  0001 C CNN
+	1    1200 6700
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:LED D1
+U 1 1 5F45BE49
+P 1200 7200
+F 0 "D1" H 1193 7417 50  0000 C CNN
+F 1 "LED" H 1193 7326 50  0000 C CNN
+F 2 "LED_THT:LED_D3.0mm" H 1200 7200 50  0001 C CNN
+F 3 "~" H 1200 7200 50  0001 C CNN
+	1    1200 7200
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:LED D2
+U 1 1 5F45C7C5
+P 1650 7200
+F 0 "D2" H 1643 7417 50  0000 C CNN
+F 1 "LED" H 1643 7326 50  0000 C CNN
+F 2 "LED_THT:LED_D3.0mm" H 1650 7200 50  0001 C CNN
+F 3 "~" H 1650 7200 50  0001 C CNN
+	1    1650 7200
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:Fuse F1
+U 1 1 5F45D28F
+P 1700 6700
+F 0 "F1" H 1760 6746 50  0000 L CNN
+F 1 "Pojistka 1A" H 1760 6655 50  0000 L CNN
+F 2 "Fuse:Fuseholder_Cylinder-5x20mm_Schurter_0031_8201_Horizontal_Open" V 1630 6700 50  0001 C CNN
+F 3 "~" H 1700 6700 50  0001 C CNN
+	1    1700 6700
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R1
+U 1 1 5F461B8F
+P 2150 7150
+F 0 "R1" H 2220 7196 50  0000 L CNN
+F 1 "R" H 2220 7105 50  0000 L CNN
+F 2 "" V 2080 7150 50  0001 C CNN
+F 3 "~" H 2150 7150 50  0001 C CNN
+	1    2150 7150
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R2
+U 1 1 5F462D78
+P 2550 7150
+F 0 "R2" H 2620 7196 50  0000 L CNN
+F 1 "R" H 2620 7105 50  0000 L CNN
+F 2 "" V 2480 7150 50  0001 C CNN
+F 3 "~" H 2550 7150 50  0001 C CNN
+	1    2550 7150
+	1    0    0    -1  
+$EndComp
+$Comp
+L Switch:SW_Push SW3
+U 1 1 5F466F75
+P 2400 6250
+F 0 "SW3" H 2400 6535 50  0000 C CNN
+F 1 "Ebtn" H 2400 6444 50  0000 C CNN
+F 2 "Button_Switch_THT:SW_PUSH_6mm" H 2400 6450 50  0001 C CNN
+F 3 "~" H 2400 6450 50  0001 C CNN
+	1    2400 6250
+	1    0    0    -1  
+$EndComp
+$Comp
+L Switch:SW_Push SW2
+U 1 1 5F4674C6
+P 2400 5750
+F 0 "SW2" H 2400 6035 50  0000 C CNN
+F 1 "Resetbtn" H 2400 5944 50  0000 C CNN
+F 2 "Button_Switch_THT:SW_PUSH_6mm" H 2400 5950 50  0001 C CNN
+F 3 "~" H 2400 5950 50  0001 C CNN
+	1    2400 5750
+	1    0    0    -1  
+$EndComp
+$Comp
+L Switch:SW_Push SW1
+U 1 1 5F468B1E
+P 2400 5250
+F 0 "SW1" H 2400 5535 50  0000 C CNN
+F 1 "Greenbtn" H 2400 5444 50  0000 C CNN
+F 2 "Button_Switch_THT:SW_PUSH-12mm" H 2400 5450 50  0001 C CNN
+F 3 "~" H 2400 5450 50  0001 C CNN
+	1    2400 5250
+	1    0    0    -1  
+$EndComp
+$Comp
+L Switch:SW_Push SW4
+U 1 1 5F4691E4
+P 2450 4750
+F 0 "SW4" H 2450 5035 50  0000 C CNN
+F 1 "Redbtn" H 2450 4944 50  0000 C CNN
+F 2 "Button_Switch_THT:SW_PUSH-12mm" H 2450 4950 50  0001 C CNN
+F 3 "~" H 2450 4950 50  0001 C CNN
+	1    2450 4750
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector:Screw_Terminal_01x02 J?
+U 1 1 5F46BB86
+P 2450 4050
+F 0 "J?" H 2530 4042 50  0000 L CNN
+F 1 "Screw_Terminal_01x02" H 2530 3951 50  0000 L CNN
+F 2 "" H 2450 4050 50  0001 C CNN
+F 3 "~" H 2450 4050 50  0001 C CNN
+	1    2450 4050
+	1    0    0    -1  
+$EndComp
+$EndSCHEMATC
