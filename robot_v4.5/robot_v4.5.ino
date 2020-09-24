@@ -31,6 +31,7 @@
 //senzor povrchu - piny
    
 #define iron          13  
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
 
 #define NUM_SENSORS             6     // number of sensors used
 #define NUM_SAMPLES_PER_SENSOR  2500  // average 4 analog samples per sensor reading
