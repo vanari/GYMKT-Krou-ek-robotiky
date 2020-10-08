@@ -1,0 +1,42 @@
+      /*if (GetFrontDist() < 13)
+             {
+                GoAround = 1;
+                CubePhase = 1;
+             }
+        } 
+        else
+        {        if (LapAnalyze())
+        {
+            delay(400);
+            speed = 0;
+        }
+            PSV[0] = THRESHOLD + 100; // zajisteni toho, ze robot pojede na caru
+            byte dist = GetSideDist();
+            switch (phase)  // phase = 1: prave rozpoznal krabici a sleduje pulku hrany, phase = 2: dalsi hrana, kterou sleduje celou, phase = 3: konec az po caru
+            {
+                case 1:
+                    if ((STRAIGHT-3 < dist) && (STRAIGHT+3 > dist))
+                        angle = map(dist, DISTCUBE-3, DISTCUBE+3, STRAIGHT+10, STRAIGHT-10);
+                    else
+                    {
+                        delay(400);
+                        PerpendicularLeft();
+                        phase = 2;
+                    }
+                    break;
+                case 2:
+                    if ((STRAIGHT-3 < dist) && (STRAIGHT+3 > dist))
+                        angle = map(dist, DISTCUBE-3, DISTCUBE+3, STRAIGHT+10, STRAIGHT-10);
+                    else
+                    {
+                        delay(400);
+                        PerpendicularLeft();
+                        phase = 3;
+                    }
+                    break;
+                case 3:
+                    if ((STRAIGHT-3 < dist) && (STRAIGHT+3 > dist))
+                        angle = map(dist, DISTCUBE-3, DISTCUBE+3, STRAIGHT+10, STRAIGHT-10);
+                    if  
+                    break;
+        }*/
