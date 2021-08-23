@@ -1,3 +1,5 @@
+#include "defines.h"
+
 // makra testu
 #define TESTSPEED   140  // max 255
 #define TESTANGLE   88   // rovnovazna poloha = STRAIGHT
@@ -38,7 +40,7 @@ void turntest()
 		analogWrite(MOTORPIN, 120);
 		delay(1000);
 		analogWrite(MOTORPIN, 150);
-		PerpendicularRight();
+		perpendicularRight();
 		delay(300);
 		analogWrite(MOTORPIN, 0);
 }

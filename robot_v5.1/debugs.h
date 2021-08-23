@@ -1,3 +1,5 @@
+#include "defines.h"
+
 void debugbtn()
 {
     if (!digitalRead(GREENBTN))

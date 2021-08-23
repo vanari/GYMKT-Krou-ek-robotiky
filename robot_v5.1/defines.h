@@ -1,3 +1,9 @@
+#pragma once
+
+#include "QTRSensors.h"
+#include <NewPing.h>
+#include <Servo.h>
+
 // definovani pinu 
 #define REDBTN      A5
 #define GREENBTN    A3
@@ -26,3 +32,10 @@
 
 // definovani sonaru
 #define DISTCUBE    10  // vzdalenost robota od objizdene kostky v cm
+
+NewPing sonarfront(TRIG_1, ECHO_1, MAXDISTANCE);
+NewPing sonarside(TRIG_2, ECHO_2, MAXDISTANCE);
+QTRSensorsRC qtrrc((unsigned char[]) {8, 9, 10, 11, 12, 13}, NUMSENS, NUMSAMPLES, EMITTERPIN);
+unsigned int SensorValues[NUMSENS];
+unsigned int PSV[NUMSENS];
+Servo servo;

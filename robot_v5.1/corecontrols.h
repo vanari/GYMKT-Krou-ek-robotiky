@@ -1,3 +1,15 @@
+#include "defines.h"
+
+const float R_ANG = map(MAXANG, 0, 180, 0, PI);
+
+byte getMaxSpeed()
+{
+    static byte s = map(analogRead(POT), 0, 1023, MINSPEED, 255);
+    return s;
+}
+
+byte MAXSPEED = getMaxSpeed;
+
 byte getFrontDist()
 {
     int dist = sonarfront.ping_cm();
@@ -35,12 +47,6 @@ void steer(int a)
 		float r_a = map(a, 0, 180, 0, PI);  // uhel v radianech
 		byte speed = map (abs(sin(r_a)), 0, sin(R_ANG), MINSPEED, MAXSPEED); // vetsi rychlost do zatacky
 		analogWrite(MOTORPIN, speed);
-}
-
-byte getMaxSpeed()
-{
-    static byte s = map(analogRead(POT), 0, 1023, MINSPEED, 255);
-    return s;
 }
 
 bool lapAnalyze()

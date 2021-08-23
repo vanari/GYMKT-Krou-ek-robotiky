@@ -3,11 +3,9 @@
  * 2017-2021 
  */
 
-// knihovny
-#include "QTRSensors.h"
-#include <NewPing.h>
-#include <Servo.h>
-#include "defines.h"
+#include "corecontrols.h"
+#include "tests.h"
+#include "debugs.h"
 
 // debugy
 //#define DEBUG
@@ -17,6 +15,7 @@
 //#define DEBUGQTR
 
 // testy
+//#define TESTS
 //#define TURNTEST
 //#define STRAIGHTSERVO
 //#define SERVOTEST
@@ -27,18 +26,8 @@
 #define CYCLESDEBUG      // pocitej pocet pruchodu loop cyklem za sekundu, musi byt definovan i RACE
 #define INCLUDEBAUT      // inicializuj bautrate
 
-QTRSensorsRC qtrrc((unsigned char[]) {8, 9, 10, 11, 12, 13}, NUMSENS, NUMSAMPLES, EMITTERPIN);
-unsigned int SensorValues[NUMSENS];
-unsigned int PSV[NUMSENS];
-
-NewPing sonarfront(TRIG_1, ECHO_1, MAXDISTANCE);
-NewPing sonarside(TRIG_2, ECHO_2, MAXDISTANCE);
-Servo servo;
-const float R_ANG = map(MAXANG, 0, 180, 0, PI);
-
-byte speed = 100;
+int cycles = 0;
 int angle = 0;
-byte MAXSPEED = getMaxSpeed;
 bool prekazka = 0;
 byte cubePhase = 1;
 const float SineMaxAng = sin((PI / 180)*MAXANG);
@@ -91,16 +80,16 @@ void loop()
 			#ifdef DEBUGQTR
 					debugqtr();
 			#endif     
-			#ifdef SERVOTEST
-					servotest();
-			#endif   
-			#ifdef MOTORTEST
-					motortest();
-			#endif
 			delay(500);
 			Serial.println();
     #endif
 		#ifdef TESTS
+			#ifdef SERVOTEST
+          servotest();
+      #endif   
+      #ifdef MOTORTEST
+          motortest();
+      #endif
 			#ifdef STRAIGHTSERVO       // pohled seshora - vetsi uhel na servu odpovida vic doprava, mensi uhel vic doleva
 					straightservo();
 			#endif
@@ -162,7 +151,7 @@ void loop()
 					steer(-30);
 					delay(200);
 					steer(0);
-          while (!((SensorValues[0] > THRESHOLD) || (SensorValues[1] > THRESHOLD) || (SensorValues[2] > THRESHOLD) || (SensorValues[3] > THRESHOLD) || (SensorValues[4] > THRESHOLD) || (SensorValues[5] > THRESHOLD)))
+          while (!((SensorValues[0] > THRESHOLD) || (SensorValues[1] > THRESHOLD) || (SensorValues[2] > THRESHOLD) || (SensorValues[3] > THRESHOLD) || (SensorValues[4] > THRESHOLD) || (SensorValues[5] > THRESHOLD)));
         }
     }
     else // nasledovani cary
@@ -174,7 +163,7 @@ void loop()
 				{
 						starttime = millis();
 						Serial.print("Cykly: ");
-						Serial.println(cycle);
+						Serial.println(cycleDebug);
 						cycleDebug = 0;
 				}
 				#endif
