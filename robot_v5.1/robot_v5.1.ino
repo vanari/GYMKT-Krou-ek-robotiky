@@ -18,25 +18,15 @@
 //#define TESTS
 //#define TURNTEST
 //#define STRAIGHTSERVO
-//#define SERVOTEST
+#define SERVOTEST
 //#define MOTORTEST
 //#define WHOLETEST
 
-#define RACE             // odkomentuj pro zavodeni, zakomentuj pro debug
-#define CYCLESDEBUG      // pocitej pocet pruchodu loop cyklem za sekundu, musi byt definovan i RACE
-#define INCLUDEBAUT      // inicializuj bautrate
+//#define RACE             // odkomentuj pro zavodeni, zakomentuj pro debug
+//#define CYCLESDEBUG      // pocitej pocet pruchodu loop cyklem za sekundu, musi byt definovan i RACE
+//#define INCLUDEBAUT      // inicializuj bautrate
 
-int cycles = 0;
-int angle = 0;
-bool prekazka = 0;
-byte cubePhase = 1;
-const float SineMaxAng = sin((PI / 180)*MAXANG);
 unsigned long starttime;
-int cycleDebug = 0;
-byte cycleRace = 0; 
-byte cubeWidth = 0;
-byte cubeLength = 0;
-byte dist;
 
 void setup()
 {    
@@ -60,6 +50,12 @@ void setup()
 					qtrrc.calibrate();
 					delay(20);
 			}
+			Serial.println(qtrrc.calibratedMaximum[0]);
+      Serial.println(qtrrc.calibratedMaximum[1]);
+      Serial.println(qtrrc.calibratedMaximum[2]);
+      Serial.println(qtrrc.calibratedMaximum[3]);
+      Serial.println(qtrrc.calibratedMaximum[4]);
+      Serial.println(qtrrc.calibratedMaximum[5]);
 			while(digitalRead(GREENBTN));  // cekani, az se zmackne zelene tlacitko a zacne nekonecny loop
 		#endif
     starttime = millis();
@@ -67,6 +63,14 @@ void setup()
 
 void loop()
 {
+    byte cycleObstacle = 0;
+    int cycleDebug = 0;
+    byte cycleRace = 0;
+    int angle = 0;
+    bool obstacle = 0;
+    byte obstaclePhase = 1;
+    byte dist;
+    
     #ifdef DEBUG
 			#ifdef DEBUGBTN
 					debugbtn();
@@ -80,7 +84,7 @@ void loop()
 			#ifdef DEBUGQTR
 					debugqtr();
 			#endif     
-			delay(500);
+			delay(200);
 			Serial.println();
     #endif
 		#ifdef TESTS
@@ -99,7 +103,7 @@ void loop()
 			#ifdef TURNTEST
 					turntest();
 			#endif 
-			delay(500);
+			delay(200);
 			Serial.println();
 		#endif
    
@@ -116,11 +120,11 @@ void loop()
 			    ^  1
 					|
 		*/
-    if (prekazka) // objizdeni prekazky
+    if (obstacle) // objizdeni prekazky
     {
-        if ((cubePhase == 1) || (cubePhase == 2))
+        if ((obstaclePhase == 1) || (obstaclePhase == 2))
         {
-            cycles++;
+            cycleObstacle++;
             dist = 0;
             for (int i = 0; i < 4; i++)
               dist += getSideDist;
@@ -129,23 +133,23 @@ void loop()
                 angle += map(dist, 0, 2*DISTCUBE, MAXANG, -MAXANG); 
             else
             {
-                if (cubePhase == 1)
+                if (obstaclePhase == 1)
                 {
                   delay(100);
                   perpendicularLeft;
                 }
-                cubePhase++;
+                obstaclePhase++;
             }
-            if (cycles = 4)
+            if (cycleObstacle = 4)
             {
               angle = angle / 4;
               steer(angle);
-              cycles = 0;
+              cycleObstacle = 0;
             }
         }
         else
         {
-          prekazka = 0;           
+          obstacle = 0;           
           delay(200);
 					// otaceni se doleva trochu
 					steer(-30);
@@ -193,8 +197,8 @@ void loop()
         }
 				if (getFrontDist < DISTCUBE+5)
 				{
-						cycles = 0;
-						prekazka = 1;
+						cycleObstacle = 0;
+						obstacle = 1;
 						perpendicularRight;
 				}         
     }      

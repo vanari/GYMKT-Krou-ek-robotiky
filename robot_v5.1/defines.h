@@ -1,13 +1,13 @@
-#pragma once
+#pragma once // nemazat jinak kompilator bude picovat
 
 #include "QTRSensors.h"
 #include <NewPing.h>
 #include <Servo.h>
 
 // definovani pinu 
-#define REDBTN      A5
-#define GREENBTN    A3
-#define POT         A4
+#define REDBTN      A4
+#define GREENBTN    A5
+#define POT         A3
 #define MOTORPIN    6
 #define SERVOPIN    7
 #define TRIG_1      2   // predni sonar

@@ -20,7 +20,23 @@ void debugsonic()
         }
         dist = dist / 5;
     }
-    return dist;
+    Serial.print("Bocni sonar: ");
+    Serial.print(dist);
+    Serial.println(" cm.");
+    
+    dist = sonarfront.ping_cm();
+    delay(2);
+    if ((dist > 0) && (dist < 50)) {
+        dist = 0;
+        for (int i = 0; i < 5; i++) {
+            dist += sonarfront.ping_cm();
+            delay(1);
+        }
+        dist = dist / 5;
+    }
+    Serial.print("Predni sonar: ");
+    Serial.print(dist);
+    Serial.println(" cm.");   
 }
 
 void debugpot()
@@ -31,6 +47,7 @@ void debugpot()
 
 void debugqtr()
 {
+    digitalWrite(EMITTERPIN, LOW);
     for (byte i = 0; i < NUMSENS; i++)
     {
         Serial.print("Sensor c.");
