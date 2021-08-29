@@ -1,8 +1,7 @@
 #pragma once
 
 #include "defines.h"
-
-//const float R_ANG = map(MAXANG, 0, 180, 0, PI);
+#define MAXSPEED 255
 
 byte getMaxSpeed()
 {
@@ -10,7 +9,7 @@ byte getMaxSpeed()
     return s;
 }
 
-byte MAXSPEED = getMaxSpeed;
+//byte MAXSPEED = getMaxSpeed;
 
 byte getFrontDist()
 {
@@ -42,44 +41,24 @@ byte getSideDist()
     return dist;
 }
 
-void steer(int a)
+void steer(byte a)
 {
     if ((a < MAXANG) && (a > -MAXANG))
         servo.write(STRAIGHT+a);
-}
-
-bool lapAnalyze()
-{
-    static long time = 0;
-    static byte numlaps = 0;
-    if ((sensorValues[0] > THRESHOLD) && (sensorValues[1] > THRESHOLD) && (sensorValues[2] > THRESHOLD) && (sensorValues[3] > THRESHOLD) && (sensorValues[4] > THRESHOLD) && (sensorValues[5] > THRESHOLD))
-    {
-        if (numlaps < LAPS)
-        {
-            numlaps++;
-            time = millis();
-        }
-        else
-            return 1;
-    }
-    if (numlaps >= LAPS)
-        return 1;
-    return 0;
+     byte speed = map (abs(a), 0, MAXANG, MINSPEED, MAXSPEED); // vetsi rychlost do zatacky
+     analogWrite(MOTORPIN, speed);
 }
 
 void perpendicularRight()
 {
-    steer(25);
-    delay(190);
-    steer(32);
-    delay(380);
-    steer(0);
+   servo.write(50+STRAIGHT);
+   analogWrite(MOTORPIN, 160);
+   delay(500);
 }
 
 void perpendicularLeft()
 {
-    delay(190);
-    steer(-32);
-    delay(380);
-    steer(0);
+   servo.write(-50+STRAIGHT);
+   analogWrite(MOTORPIN, 160);
+   delay(500);
 }

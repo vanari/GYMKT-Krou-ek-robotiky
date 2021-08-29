@@ -2,7 +2,8 @@
 
 // makra testu
 #define TESTSPEED   140  // max 255
-#define TESTANGLE   88   // rovnovazna poloha = STRAIGHT
+#define TESTANGLE   83   // rovnovazna poloha = STRAIGHT
+byte str = TESTANGLE;
 
 void motortest()
 {
@@ -15,7 +16,7 @@ void motortest()
 void servotest()
 {
     int i;
-    for (i = STRAIGHT; i < 170; i++)
+    for (i = TESTANGLE; i < 170; i++)
     {
         servo.write(i);
         delay(10);
@@ -27,7 +28,7 @@ void servotest()
         delay(10);
     }
     delay(30);
-    for (i = 10; i < STRAIGHT; i++)
+    for (i = 10; i < TESTANGLE; i++)
     {
         servo.write(i);
         delay(10);
@@ -56,7 +57,7 @@ void wholetest()
 
 void straightservo()
 {
-    byte str;
+    servo.write(str);
     if (!digitalRead(GREENBTN))
     {
         str += 1;
@@ -69,11 +70,10 @@ void straightservo()
         if (str < 70)
             str = 70;
     }
-    servo.write(str);
-    delay(150);
+    delay(50);
     if ((!digitalRead(GREENBTN)) && (!digitalRead(REDBTN)))
     {
-        analogWrite(MOTORPIN, 100);
+        analogWrite(MOTORPIN, 130);
         delay(3000);
         analogWrite(MOTORPIN, 0);
     }

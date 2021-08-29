@@ -18,11 +18,11 @@
 //#define TESTS
 //#define TURNTEST
 //#define STRAIGHTSERVO
-#define SERVOTEST
+//#define SERVOTEST
 //#define MOTORTEST
 //#define WHOLETEST
 
-//#define RACE             // odkomentuj pro zavodeni, zakomentuj pro debug
+#define RACE             // odkomentuj pro zavodeni, zakomentuj pro debug
 //#define CYCLESDEBUG      // pocitej pocet pruchodu loop cyklem za sekundu, musi byt definovan i RACE
 //#define INCLUDEBAUT      // inicializuj bautrate
 
@@ -50,12 +50,12 @@ void setup()
 					qtrrc.calibrate();
 					delay(20);
 			}
-			Serial.println(qtrrc.calibratedMaximum[0]);
-      Serial.println(qtrrc.calibratedMaximum[1]);
-      Serial.println(qtrrc.calibratedMaximum[2]);
-      Serial.println(qtrrc.calibratedMaximum[3]);
-      Serial.println(qtrrc.calibratedMaximum[4]);
-      Serial.println(qtrrc.calibratedMaximum[5]);
+			Serial.println(qtrrc.calibratedMaximumOn[0]);
+      Serial.println(qtrrc.calibratedMaximumOn[1]);
+      Serial.println(qtrrc.calibratedMaximumOn[2]);
+      Serial.println(qtrrc.calibratedMaximumOn[3]);
+      Serial.println(qtrrc.calibratedMaximumOn[4]);
+      Serial.println(qtrrc.calibratedMaximumOn[5]);
 			while(digitalRead(GREENBTN));  // cekani, az se zmackne zelene tlacitko a zacne nekonecny loop
 		#endif
     starttime = millis();
@@ -155,7 +155,7 @@ void loop()
 					steer(-30);
 					delay(200);
 					steer(0);
-          while (!((SensorValues[0] > THRESHOLD) || (SensorValues[1] > THRESHOLD) || (SensorValues[2] > THRESHOLD) || (SensorValues[3] > THRESHOLD) || (SensorValues[4] > THRESHOLD) || (SensorValues[5] > THRESHOLD)));
+          while (!((sensorValues[0] > THRESHOLD) || (sensorValues[1] > THRESHOLD) || (sensorValues[2] > THRESHOLD) || (sensorValues[3] > THRESHOLD) || (sensorValues[4] > THRESHOLD) || (sensorValues[5] > THRESHOLD)));
         }
     }
     else // nasledovani cary
@@ -173,24 +173,29 @@ void loop()
 				#endif
 
         cycleRace++;
-        unsigned int position = qtrrc.readLine(SensorValues);            
-        if ((SensorValues[0] > THRESHOLD) || (SensorValues[1] > THRESHOLD) || (SensorValues[2] > THRESHOLD) || (SensorValues[3] > THRESHOLD) || (SensorValues[4] > THRESHOLD) || (SensorValues[5] > THRESHOLD))
+        unsigned int position = qtrrc.readLine(sensorValues);            
+        if ((sensorValues[0] > THRESHOLD) || (sensorValues[1] > THRESHOLD) || (sensorValues[2] > THRESHOLD) || (sensorValues[3] > THRESHOLD) || (sensorValues[4] > THRESHOLD) || (sensorValues[5] > THRESHOLD))
 				{
-            angle += map(position, 0, 5000, -MAXANG+5, MAXANG-5);
-            PSV[0] = SensorValues[0];
-            PSV[5] = SensorValues[5];
+            angle = map(position, 0, 5000, -MAXANG+5, MAXANG-5);
+            PSV[0] = sensorValues[0];
+            PSV[5] = sensorValues[5];
         }
-        if(!((SensorValues[0] > THRESHOLD) || (SensorValues[1] > THRESHOLD) || (SensorValues[2] > THRESHOLD) || (SensorValues[3] > THRESHOLD) || (SensorValues[4] > THRESHOLD) || (SensorValues[5] > THRESHOLD)))
+        if(!((sensorValues[0] > THRESHOLD) || (sensorValues[1] > THRESHOLD) || (sensorValues[2] > THRESHOLD) || (sensorValues[3] > THRESHOLD) || (sensorValues[4] > THRESHOLD) || (sensorValues[5] > THRESHOLD)))
         {
             if (PSV[0] > THRESHOLD)
                 angle = -MAXANG-5;
             if (PSV[5] > THRESHOLD)
                 angle = MAXANG+5;
-        }            
+        }
+        steer(angle);
+        float r_a = map(angle, 0, 180, 0, PI);  // uhel v radianech
+//        byte speed = map (abs(sin(r_a)), 0, sin(R_ANG), MINSPEED, MAXSPEED); // vetsi rychlost do zatacky
+//        analogWrite(MOTORPIN, speed);           
 				// zde probiha manipulace s robotem po zprumerovani hodnot pro lepsi stabilitu
         if (cycleRace = 20)
         {
           angle = angle / 20;
+          int(angle);
           steer(angle);
 					angle = 0;
           cycleRace = 0;
@@ -201,6 +206,6 @@ void loop()
 						obstacle = 1;
 						perpendicularRight;
 				}         
-    }      
+    }     
     #endif
 } 

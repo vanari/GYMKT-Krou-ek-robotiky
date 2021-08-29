@@ -12,7 +12,7 @@ void debugbtn()
 
 void debugsonic()
 {
-    int dist = sonarside.ping_cm();
+    /*int dist = sonarside.ping_cm();
     delay(2);
     if ((dist > 0) && (dist < 50)) {
         dist = 0;
@@ -21,11 +21,19 @@ void debugsonic()
             delay(1);
         }
         dist = dist / 5;
-    }
+    }*/
+
+    int dist = 0;
+    for (int i = 0; i < 5; i++) {
+            dist += sonarside.ping_cm();
+            delay(1);
+        }
+        dist = dist / 5 ;
     Serial.print("Bocni sonar: ");
     Serial.print(dist);
     Serial.println(" cm.");
     
+    /*
     dist = sonarfront.ping_cm();
     delay(2);
     if ((dist > 0) && (dist < 50)) {
@@ -38,7 +46,8 @@ void debugsonic()
     }
     Serial.print("Predni sonar: ");
     Serial.print(dist);
-    Serial.println(" cm.");   
+    Serial.println(" cm.");
+  */
 }
 
 void debugpot()
@@ -46,7 +55,7 @@ void debugpot()
     Serial.print("Potenciometr: ");
     Serial.println(analogRead(POT));
 }
-
+/*
 void debugqtr()
 {
     digitalWrite(EMITTERPIN, LOW);
@@ -58,3 +67,4 @@ void debugqtr()
         Serial.println(sensorValues[i]);
     }
 }
+*/

@@ -1,6 +1,5 @@
 #pragma once // nemazat jinak kompilator bude picovat
 
-#include "QTRSensors.h"
 #include <NewPing.h>
 #include <Servo.h>
 
@@ -22,7 +21,7 @@
 #define EMITTERPIN  A0 
 
 // definovani serva
-#define STRAIGHT    83  // pohled seshora - vetsi uhel odpovida vic doprava, mensi uhel vic doleva
+#define STRAIGHT    85  // pohled seshora - vetsi uhel odpovida vic doprava, mensi uhel vic doleva
 #define MAXANG      55  // maximalni odchyleni
 
 // definovani dalsiho
@@ -35,7 +34,4 @@
 
 NewPing sonarfront(TRIG_1, ECHO_1, MAXDISTANCE);
 NewPing sonarside(TRIG_2, ECHO_2, MAXDISTANCE);
-QTRSensorsRC qtrrc((unsigned char[]) {8, 9, 10, 11, 12, 13}, NUMSENS, NUMSAMPLES, EMITTERPIN);
-unsigned int sensorValues[NUMSENS];
-unsigned int PSV[NUMSENS];
 Servo servo;
