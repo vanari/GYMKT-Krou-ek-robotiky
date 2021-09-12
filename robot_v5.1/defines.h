@@ -22,16 +22,17 @@
 #define EMITTERPIN  A0 
 
 // definovani serva
-#define STRAIGHT    83  // pohled seshora - vetsi uhel odpovida vic doprava, mensi uhel vic doleva
+#define STRAIGHT    85  // pohled seshora - vetsi uhel odpovida vic doprava, mensi uhel vic doleva
 #define MAXANG      55  // maximalni odchyleni
 
 // definovani dalsiho
 #define THRESHOLD   575
 #define LAPS        2
-#define MINSPEED    130 // max 255
+#define MINSPEED    80 // max 255
+#define MAXSPEED    140
 
 // definovani sonaru
-#define DISTCUBE    10  // vzdalenost robota od objizdene kostky v cm
+#define DISTCUBE    20  // vzdalenost robota od objizdene kostky v cm
 
 NewPing sonarfront(TRIG_1, ECHO_1, MAXDISTANCE);
 NewPing sonarside(TRIG_2, ECHO_2, MAXDISTANCE);
@@ -39,3 +40,5 @@ QTRSensorsRC qtrrc((unsigned char[]) {8, 9, 10, 11, 12, 13}, NUMSENS, NUMSAMPLES
 unsigned int sensorValues[NUMSENS];
 unsigned int PSV[NUMSENS];
 Servo servo;
+
+const float R_ANG = map(MAXANG, 0, 180, 0, PI);

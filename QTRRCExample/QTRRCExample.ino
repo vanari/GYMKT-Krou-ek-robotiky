@@ -38,16 +38,10 @@ QTRSensorsRC qtrrc((unsigned char[]) {8, 9, 10, 11, 12, 13},
   NUM_SENSORS, TIMEOUT, EMITTER_PIN); 
 unsigned int sensorValues[NUM_SENSORS];
 
-Servo servo;
-
 
 void setup()
 {
   delay(500);
-  servo.attach(7);
-  delay(50);
-  servo.write(100);
-  delay(50);
    // turn on Arduino's LED to indicate we are in calibration mode
   for (int i = 0; i < 400; i++)  // make the calibration take about 10 seconds
   {

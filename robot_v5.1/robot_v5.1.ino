@@ -22,7 +22,7 @@
 //#define MOTORTEST
 //#define WHOLETEST
 
-#define RACE             // odkomentuj pro zavodeni, zakomentuj pro debug
+#define RACE               // odkomentuj pro zavodeni, zakomentuj pro debug
 //#define CYCLESDEBUG      // pocitej pocet pruchodu loop cyklem za sekundu, musi byt definovan i RACE
 //#define INCLUDEBAUT      // inicializuj bautrate
 
@@ -57,6 +57,7 @@ void setup()
       Serial.println(qtrrc.calibratedMaximumOn[4]);
       Serial.println(qtrrc.calibratedMaximumOn[5]);
 			while(digitalRead(GREENBTN));  // cekani, az se zmackne zelene tlacitko a zacne nekonecny loop
+      analogWrite(MOTORPIN, MINSPEED);
 		#endif
     starttime = millis();
 }
@@ -66,11 +67,12 @@ void loop()
     byte cycleObstacle = 0;
     int cycleDebug = 0;
     byte cycleRace = 0;
-    int angle = 0;
+    byte angle = 0;
     bool obstacle = 0;
-    byte obstaclePhase = 1;
-    byte dist;
-    
+    byte obstaclePhase = 0;
+    byte dist = 0;
+    byte dist2;
+ 
     #ifdef DEBUG
 			#ifdef DEBUGBTN
 					debugbtn();
@@ -111,55 +113,21 @@ void loop()
 		/*
 			cubePhase:
 			    ^
-					|  3
+					|  2
 			---------
 			|       |
-			|       | 2
+			|       | 1
 			|       |
 			---------
-			    ^  1
+			    ^  0
 					|
 		*/
-    if (obstacle) // objizdeni prekazky
+    /*if (obstacle) // objizdeni prekazky
     {
-        if ((obstaclePhase == 1) || (obstaclePhase == 2))
-        {
-            cycleObstacle++;
-            dist = 0;
-            for (int i = 0; i < 4; i++)
-              dist += getSideDist;
-            dist = dist / 4;
-            if (dist < 2*DISTCUBE)
-                angle += map(dist, 0, 2*DISTCUBE, MAXANG, -MAXANG); 
-            else
-            {
-                if (obstaclePhase == 1)
-                {
-                  delay(100);
-                  perpendicularLeft;
-                }
-                obstaclePhase++;
-            }
-            if (cycleObstacle = 4)
-            {
-              angle = angle / 4;
-              steer(angle);
-              cycleObstacle = 0;
-            }
-        }
-        else
-        {
-          obstacle = 0;           
-          delay(200);
-					// otaceni se doleva trochu
-					steer(-30);
-					delay(200);
-					steer(0);
-          while (!((sensorValues[0] > THRESHOLD) || (sensorValues[1] > THRESHOLD) || (sensorValues[2] > THRESHOLD) || (sensorValues[3] > THRESHOLD) || (sensorValues[4] > THRESHOLD) || (sensorValues[5] > THRESHOLD)));
-        }
+      
     }
     else // nasledovani cary
-    {
+    {*/
 				#ifdef CYCLESDEBUG
 				if ((millis()-starttime)<1000)
 						cycleDebug++;
@@ -173,39 +141,55 @@ void loop()
 				#endif
 
         cycleRace++;
+        dist2 = getFrontDist();
+        if (dist2 != 0)
+        {
+          cycleObstacle++;
+          dist += dist2;
+        }
         unsigned int position = qtrrc.readLine(sensorValues);            
         if ((sensorValues[0] > THRESHOLD) || (sensorValues[1] > THRESHOLD) || (sensorValues[2] > THRESHOLD) || (sensorValues[3] > THRESHOLD) || (sensorValues[4] > THRESHOLD) || (sensorValues[5] > THRESHOLD))
 				{
-            angle = map(position, 0, 5000, -MAXANG+5, MAXANG-5);
+            angle += map(position, 0, 5000, -MAXANG, MAXANG);
             PSV[0] = sensorValues[0];
             PSV[5] = sensorValues[5];
         }
         if(!((sensorValues[0] > THRESHOLD) || (sensorValues[1] > THRESHOLD) || (sensorValues[2] > THRESHOLD) || (sensorValues[3] > THRESHOLD) || (sensorValues[4] > THRESHOLD) || (sensorValues[5] > THRESHOLD)))
         {
             if (PSV[0] > THRESHOLD)
-                angle = -MAXANG-5;
+                angle = -MAXANG;
             if (PSV[5] > THRESHOLD)
-                angle = MAXANG+5;
+                angle = MAXANG;
         }
-        steer(angle);
-        float r_a = map(angle, 0, 180, 0, PI);  // uhel v radianech
-//        byte speed = map (abs(sin(r_a)), 0, sin(R_ANG), MINSPEED, MAXSPEED); // vetsi rychlost do zatacky
-//        analogWrite(MOTORPIN, speed);           
-				// zde probiha manipulace s robotem po zprumerovani hodnot pro lepsi stabilitu
-        if (cycleRace = 20)
+        
+        /*if (lapAnalyze())
         {
-          angle = angle / 20;
-          int(angle);
+          delay(500);
+          analogWrite(MOTORPIN, 0);
+          while (1);
+        }*/
+        
+        if (cycleRace == 10)
+        {
+          angle = angle / 10;
           steer(angle);
 					angle = 0;
           cycleRace = 0;
         }
-				if (getFrontDist < DISTCUBE+5)
-				{
-						cycleObstacle = 0;
-						obstacle = 1;
-						perpendicularRight;
-				}         
-    }     
+        /*if (cycleObstacle == 5)
+        {
+          dist = dist / 5;
+          cycleObstacle = 0;
+          if (dist < 30)
+          {
+            obstacle = 1;
+            obstaclePhase = 1;
+            perpendicularRight();
+            servo.write(STRAIGHT);
+            delay(2000);       
+          }
+          dist = 0;
+        }*/
+    //}     
     #endif
 } 

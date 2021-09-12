@@ -1,7 +1,9 @@
 #pragma once
 
 #include "defines.h"
-#define MAXSPEED 255
+#define MAXSPEED 150
+#define MINSPEED_OBSTACLE 70
+#define MAXSPEED_OBSTACLE 90
 
 byte getMaxSpeed()
 {
@@ -47,18 +49,27 @@ void steer(byte a)
         servo.write(STRAIGHT+a);
      byte speed = map (abs(a), 0, MAXANG, MINSPEED, MAXSPEED); // vetsi rychlost do zatacky
      analogWrite(MOTORPIN, speed);
+
+void steerObstacle(byte a)
+{
+    if ((a < MAXANG) && (a > -MAXANG))
+        servo.write(STRAIGHT+a);
+     byte speed = map (abs(a), 0, MAXANG, MINSPEED_OBSTACLE, MAXSPEED_OBSTACLE); // vetsi rychlost do zatacky
+     analogWrite(MOTORPIN, speed);
 }
 
 void perpendicularRight()
 {
-   servo.write(50+STRAIGHT);
-   analogWrite(MOTORPIN, 160);
-   delay(500);
+   servo.write(55+STRAIGHT);
+   analogWrite(MOTORPIN, 110);
+   delay(900);
+   analogWrite(MOTORPIN, MINSPEED_OBSTACLE);
 }
 
 void perpendicularLeft()
 {
-   servo.write(-50+STRAIGHT);
-   analogWrite(MOTORPIN, 160);
-   delay(500);
+   servo.write(-55+STRAIGHT);
+   analogWrite(MOTORPIN, 110);
+   delay(900);
+   analogWrite(MOTORPIN, MINSPEED_OBSTACLE);
 }

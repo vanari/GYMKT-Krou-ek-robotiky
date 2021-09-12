@@ -5,6 +5,7 @@
 \usepackage{fullpage}
 \usepackage{graphicx}
 \renewcommand{\baselinestretch}{1.2}
+\newcommand{\tt}[1]{\texttt{#1}
 
 \begin{document}
 \section{Mechanické složení}
@@ -31,5 +32,26 @@ Poháněcí motor se zapojuje do velké modré svorkovnice s označením M+ a M-
 
 \section{Firmware}
 Hlavní program \texttt{robot$\_$v5.1.ino} s knihovnami \texttt{debugs.h}, \texttt{tests.h}, \texttt{corecontrols.h} a \texttt{defines.h}.  
+\subsection{\tt{defines.h}}
+Obsahuje veškeré nadefinované konstanty, použité piny (jako servo, sensory) a také deklarace objektů pro servo a sonar.\\ 
+Důležité konstanty:  
+\begin{itemize}
+	\item \tt{STRAIGHT} - střední poloha serva. Vždy před startem nutno nastavit. Větší hodnota odpovídá více doprava.
+	\item \tt{MAXANG} - maximální vychýlení serva. Nechat na 55, jinak kola kvůli spojené ose drhnou.
+	\item \tt{LAPS} - počet kol
+	\item \tt{MINSPEED} - minimální rychlost robota na rovince. Nechat přibližně kolem 80, robot jinak nevychytá před překážku (přiliš rychlý). Maximální rychlost se získává pomocí polohy potenciometru a funkce \tt{getMaxSpeed}.
+\end{itemize}
+
+\subsection{\tt{corecontrols.h}}
+Obsahuje veškeré důležité funkce, které jsou důležité pro manipulaci robota.
+\begin{itemize}
+	\item \tt{getMaxSpeed}
+	\item \tt{getFront/SideDist} - ultrazvukové sonary zjistí vzdálenost od překážky.
+	\item \tt{steer} - funkce, která bere úhel od rovnovážné polohy a zatočí se servem. Pohánění motoru (větší výkon do zatáčky) zakomponováno.
+	\item \tt{steerObstacle} - stejné, jenom s menšími rychlostmi pro objíždění překážky (robot jede pomalu)
+	\item \tt{perpendicularLeft/Right} - kolmé zatočení (využití při objíždění překážky)
+	\item
+\end{itemize}
+
 
 \end{document}

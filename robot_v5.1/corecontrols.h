@@ -2,15 +2,14 @@
 
 #include "defines.h"
 
-//const float R_ANG = map(MAXANG, 0, 180, 0, PI);
 
-byte getMaxSpeed()
+/*byte getMaxSpeed()
 {
-    static byte s = map(analogRead(POT), 0, 1023, MINSPEED, 255);
+    static byte s = map(analogRead(POT), 0, 1023, MINSPEED, 150);
     return s;
-}
+}*/
 
-byte MAXSPEED = getMaxSpeed;
+
 
 byte getFrontDist()
 {
@@ -42,10 +41,13 @@ byte getSideDist()
     return dist;
 }
 
-void steer(int a)
+void steer(byte a)
 {
     if ((a < MAXANG) && (a > -MAXANG))
         servo.write(STRAIGHT+a);
+     float r_a = map(a, 0, 180, 0, PI);
+     byte speed = map (abs(sin(r_a)), 0, sin(R_ANG), MINSPEED, MAXSPEED);
+     analogWrite(MOTORPIN, speed);
 }
 
 bool lapAnalyze()

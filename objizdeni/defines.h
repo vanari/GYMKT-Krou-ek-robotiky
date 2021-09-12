@@ -2,6 +2,7 @@
 
 #include <NewPing.h>
 #include <Servo.h>
+#include "QTRSensors.h"
 
 // definovani pinu 
 #define REDBTN      A4
@@ -13,7 +14,7 @@
 #define ECHO_1      3   // predni sonar       
 #define TRIG_2      4   // bocni sonar
 #define ECHO_2      5   // bocni sonar
-#define MAXDISTANCE 150
+#define MAXDISTANCE 70
 
 // definovani QTRSensoru
 #define NUMSENS     6
@@ -27,11 +28,15 @@
 // definovani dalsiho
 #define THRESHOLD   575
 #define LAPS        2
-#define MINSPEED    130 // max 255
+#define MINSPEED    80 // max 255
+// pokud budeme chtit pohybujiciho se robota pri nejmensi rychlosti, tak minimalne 65 (pri mensi se skoro nerozjede)
+// uz takovych 130 je fakt dost
 
 // definovani sonaru
-#define DISTCUBE    10  // vzdalenost robota od objizdene kostky v cm
+#define DISTCUBE    20  // vzdalenost robota od objizdene kostky v cm
 
 NewPing sonarfront(TRIG_1, ECHO_1, MAXDISTANCE);
 NewPing sonarside(TRIG_2, ECHO_2, MAXDISTANCE);
+QTRSensorsRC qtrrc((unsigned char[]) {8, 9, 10, 11, 12, 13}, NUMSENS, NUMSAMPLES, EMITTERPIN);
+unsigned int sensorValues[NUMSENS];
 Servo servo;
