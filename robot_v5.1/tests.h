@@ -80,3 +80,47 @@ void straightservo()
     Serial.print("Servo: ");
     Serial.println(str);
 }
+
+void fast_driveAroundTest()
+{
+  analogWrite(MOTORPIN, MINSPEED);
+  servo.write(STRAIGHT);
+  byte dist = getFrontDist();
+  if (dist == 0)
+    dist = MAXDISTANCE;
+  if (dist <= 35) {
+    servo.write(50+STRAIGHT);
+    analogWrite(MOTORPIN, 120);  
+    delay(500); 
+    servo.write(-50+STRAIGHT);
+    delay(550);
+    analogWrite(MOTORPIN, MINSPEED_OBSTACLE);
+    servo.write(STRAIGHT);
+    delay(2000);
+  } 
+}
+
+void slow_driveAroundTest()
+{
+  analogWrite(MOTORPIN, MINSPEED);
+  servo.write(STRAIGHT);
+  byte dist = getFrontDist();
+  if (dist == 0)
+    dist = MAXDISTANCE;
+  if (dist <= 35)
+  {
+    servo.write(50+STRAIGHT);
+    analogWrite(MOTORPIN, 120);   
+    delay(600); 
+    servo.write(STRAIGHT);
+    analogWrite(MOTORPIN, MINSPEED);
+    delay(600);
+    analogWrite(MOTORPIN, 100);
+    servo.write(-50+STRAIGHT);
+    delay(300);
+    analogWrite(MOTORPIN, MINSPEED_OBSTACLE);
+    servo.write(STRAIGHT);
+    delay(2000);
+  }
+  
+}

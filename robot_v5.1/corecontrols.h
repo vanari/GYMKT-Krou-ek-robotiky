@@ -13,40 +13,23 @@
 
 byte getFrontDist()
 {
-    int dist = sonarfront.ping_cm();
-    delay(2);
-    if ((dist > 0) && (dist < 50)) {
-        dist = 0;
-        for (int i = 0; i < 5; i++) {
-            dist += sonarfront.ping_cm();
-            delay(1);
-        }
-        dist = dist / 5;
-    }
+    byte dist = sonarfront.ping_cm();
     return dist;
 }
 
 byte getSideDist()
 {
-    int dist = sonarside.ping_cm();
-    delay(2);
-    if ((dist > 0) && (dist < 50)) {
-        dist = 0;
-        for (int i = 0; i < 5; i++) {
-            dist += sonarside.ping_cm();
-            delay(1);
-        }
-        dist = dist / 5;
-    }
+    byte dist = sonarside.ping_cm();
     return dist;
 }
 
-void steer(byte a)
+void steer(int a)
 {
-    if ((a < MAXANG) && (a > -MAXANG))
+    if ((a <= MAXANG) && (a >= -MAXANG))
         servo.write(STRAIGHT+a);
-     float r_a = map(a, 0, 180, 0, PI);
-     byte speed = map (abs(sin(r_a)), 0, sin(R_ANG), MINSPEED, MAXSPEED);
+     //float r_a = map(abs(a), 0, 90, 0, PI/2);
+     //byte speed = map (sin(r_a), 0, sin(R_ANG), MINSPEED, MAXSPEED);
+     byte speed = map (abs(a), 0, MAXANG, MINSPEED, MAXSPEED);
      analogWrite(MOTORPIN, speed);
 }
 
@@ -84,4 +67,39 @@ void perpendicularLeft()
     steer(-32);
     delay(380);
     steer(0);
+}
+
+void fast_driveAroundRight()
+{
+    servo.write(50+STRAIGHT);
+    analogWrite(MOTORPIN, 120);   
+    delay(500); 
+    servo.write(-50+STRAIGHT);
+    delay(550);
+    analogWrite(MOTORPIN, MINSPEED_OBSTACLE);
+    servo.write(STRAIGHT);
+}
+
+void slow_driveAroundRight()
+{
+    servo.write(52+STRAIGHT);
+    analogWrite(MOTORPIN, 120);   
+    delay(700); 
+    servo.write(STRAIGHT);
+    analogWrite(MOTORPIN, MINSPEED);
+    delay(450);
+    analogWrite(MOTORPIN, 120);
+    servo.write(-52+STRAIGHT);
+    delay(300);
+    analogWrite(MOTORPIN, MINSPEED_OBSTACLE);
+    servo.write(STRAIGHT);
+}
+
+void driveAroundLeft()
+{
+   servo.write(-42+STRAIGHT);
+   analogWrite(MOTORPIN, 110);  
+   qtrrc.read(sensorValues);
+   while ( !((sensorValues[0] > THRESHOLD) || (sensorValues[1] > THRESHOLD) || (sensorValues[2] > THRESHOLD) || (sensorValues[3] > THRESHOLD) || (sensorValues[4] > THRESHOLD) || (sensorValues[5] > THRESHOLD)) )
+     qtrrc.read(sensorValues);
 }

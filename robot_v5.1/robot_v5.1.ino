@@ -21,12 +21,15 @@
 //#define SERVOTEST
 //#define MOTORTEST
 //#define WHOLETEST
+//#define FAST_DRIVEAROUNDTEST
+//#define SLOW_DRIVEAROUNDTEST
 
 #define RACE               // odkomentuj pro zavodeni, zakomentuj pro debug
 //#define CYCLESDEBUG      // pocitej pocet pruchodu loop cyklem za sekundu, musi byt definovan i RACE
 //#define INCLUDEBAUT      // inicializuj bautrate
 
 unsigned long starttime;
+int t1, t2;
 
 void setup()
 {    
@@ -45,7 +48,7 @@ void setup()
     analogWrite(MOTORPIN, 0);
 		#ifdef RACE
 			while(digitalRead(REDBTN));    // cekani, az se zmackne cervene tlacitko a zacne kalibrace QTRRC sensoru
-			for (int i = 0; i < 300; i++)
+			for (int i = 0; i < 200; i++)
 			{
 					qtrrc.calibrate();
 					delay(20);
@@ -60,18 +63,16 @@ void setup()
       analogWrite(MOTORPIN, MINSPEED);
 		#endif
     starttime = millis();
+    t1 = millis();
 }
 
 void loop()
 {
-    byte cycleObstacle = 0;
     int cycleDebug = 0;
-    byte cycleRace = 0;
-    byte angle = 0;
+    signed char angle = 0;
     bool obstacle = 0;
-    byte obstaclePhase = 0;
-    byte dist = 0;
-    byte dist2;
+    byte dist;
+
  
     #ifdef DEBUG
 			#ifdef DEBUGBTN
@@ -104,30 +105,19 @@ void loop()
 			#endif
 			#ifdef TURNTEST
 					turntest();
-			#endif 
-			delay(200);
+			#endif
+      #ifdef FAST_DRIVEAROUNDTEST
+          fast_driveAroundTest();
+      #endif
+       #ifdef SLOW_DRIVEAROUNDTEST
+          slow_driveAroundTest();
+      #endif
+			delay(5);
 			Serial.println();
 		#endif
    
     #ifdef RACE
-		/*
-			cubePhase:
-			    ^
-					|  2
-			---------
-			|       |
-			|       | 1
-			|       |
-			---------
-			    ^  0
-					|
-		*/
-    /*if (obstacle) // objizdeni prekazky
-    {
-      
-    }
-    else // nasledovani cary
-    {*/
+
 				#ifdef CYCLESDEBUG
 				if ((millis()-starttime)<1000)
 						cycleDebug++;
@@ -140,17 +130,28 @@ void loop()
 				}
 				#endif
 
-        cycleRace++;
-        dist2 = getFrontDist();
-        if (dist2 != 0)
-        {
-          cycleObstacle++;
-          dist += dist2;
-        }
+    if (obstacle)
+    {
+       for (int i = 0; i < 3; i++)
+       dist += getSideDist();
+       dist = dist / 3;
+       if (dist == 0)
+       {
+         driveAroundLeft();
+         obstacle = 0;      
+       }
+       dist = 0;
+       t1 = millis();
+    }   
+    else
+    {   
+        dist = getFrontDist();     
+        if (dist == 0)
+          dist = MAXDISTANCE;
         unsigned int position = qtrrc.readLine(sensorValues);            
         if ((sensorValues[0] > THRESHOLD) || (sensorValues[1] > THRESHOLD) || (sensorValues[2] > THRESHOLD) || (sensorValues[3] > THRESHOLD) || (sensorValues[4] > THRESHOLD) || (sensorValues[5] > THRESHOLD))
 				{
-            angle += map(position, 0, 5000, -MAXANG, MAXANG);
+            angle = map(position, 0, 5000, -MAXANG, MAXANG);
             PSV[0] = sensorValues[0];
             PSV[5] = sensorValues[5];
         }
@@ -162,34 +163,48 @@ void loop()
                 angle = MAXANG;
         }
         
+        steer(angle);
+        if (dist <= 20)
+        {
+          obstacle = 1;
+          t2 = millis();
+          t1 = t2 - t1;      
+          if (t1 <= 600)
+            slow_driveAroundRight();
+          else if ((t1 > 600) && (t1 <= 2500))
+            fast_driveAroundRight();
+          else if (t1 > 2500)
+          {
+            delay(200);
+            fast_driveAroundRight();
+          }
+          delay(200);
+        }
+
+        /*if (dist < 30)
+        {
+          obstacle = 1;
+          analogWrite(MOTORPIN, MINSPEED_OBSTACLE);
+          driveAroundRight();       
+          while (obstacle)
+          {
+            dist = 0;
+            for (int i = 0; i < 5; i++)
+              dist += getSideDist();
+            dist = dist / 5 ;
+            if (dist == 0)
+            {
+              driveAroundLeft();
+              obstacle = 0;      
+            }
+          }  
+        }*/
         /*if (lapAnalyze())
         {
           delay(500);
           analogWrite(MOTORPIN, 0);
           while (1);
         }*/
-        
-        if (cycleRace == 10)
-        {
-          angle = angle / 10;
-          steer(angle);
-					angle = 0;
-          cycleRace = 0;
-        }
-        /*if (cycleObstacle == 5)
-        {
-          dist = dist / 5;
-          cycleObstacle = 0;
-          if (dist < 30)
-          {
-            obstacle = 1;
-            obstaclePhase = 1;
-            perpendicularRight();
-            servo.write(STRAIGHT);
-            delay(2000);       
-          }
-          dist = 0;
-        }*/
-    //}     
+    } 
     #endif
 } 
